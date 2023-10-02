@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AkarBilanganCalculator = () => {
   const [bilangan, setBilangan] = useState("");
@@ -7,7 +9,7 @@ const AkarBilanganCalculator = () => {
   const [hasil, setHasil] = useState("");
   const [waktuPemrosesan, setWaktuPemrosesan] = useState("");
   const [data, setData] = useState([]);
-  const [validasiError, setValidasiError] = useState("");
+  const [validasiError, setValidasiError] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -25,48 +27,70 @@ const AkarBilanganCalculator = () => {
   };
 
   const handleCalculate = async () => {
-    if (!bilangan) {
-      setValidasiError("Masukkan bilangan terlebih dahulu.");
-      return;
-    }
+    // if (!bilangan) {
+    //   setValidasiError("Masukkan bilangan terlebih dahulu.");
+    //   return;
+    // }
 
-    if (parseFloat(bilangan) < 0) {
-      setValidasiError("Bilangan harus lebih besar atau sama dengan 0.");
-      return;
-    }
+    // if (parseFloat(bilangan) < 0) {
+    //   setValidasiError("Bilangan harus lebih besar atau sama dengan 0.");
+    //   return;
+    // }
 
     try {
       const response = await axios.post(
         "http://localhost:8000/api/hitung-akar",
         {
-          bilangan: parseFloat(bilangan),
+          bilangan: bilangan,
         }
       );
 
       setHasil(response.data.akar);
       setWaktuPemrosesan(response.data.waktu_pemrosesan);
       setBilanganInput(bilangan);
-      setValidasiError(""); // Hapus pesan validasi jika berhasil
+      setValidasiError(false);
       setBilangan("");
       // Setelah berhasil menyimpan data ke database, tambahkan data baru ke state
       setData([...data, response.data]);
+      toast.success("Successful input data", {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 5000,
+      });
     } catch (error) {
-      console.error("Error:", error);
+      // Handle Axios errors
+      if (error.response && error.response.data && error.response.data.error) {
+        // If the error response contains an "error" field
+        const errorMessage = error.response.data.error.bilangan[0];
+        toast.error(errorMessage, {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 5000,
+        });
+        setBilangan("");
+        setValidasiError(true);
+      } else {
+        // Handle other errors
+        console.error("Error:", error);
+        toast.error("An error occurred", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 5000,
+        });
+      }
     }
   };
 
   return (
     <div className="my-8 lg:mx-28 mx-10 min-h-screen ">
+      <ToastContainer />
       <div className="shadow-lg p-10 border  ">
-        <h1 className="text-3xl font-semibold mb-10">
+        <h1 className="text-3xl font-semibold mb-10 text-blue-900">
           Kalkulator Akar Bilangan
         </h1>
         <div className="">
           <div className="flex gap-4 justify-between items-center">
             <input
               placeholder="Masukkan bilangan"
-              type="number"
-              className={`border rounded px-3 py-2 w-[400px] ${
+              type="text"
+              className={` border-[2px] rounded px-3 py-2 w-[400px] ${
                 validasiError && "border-red-500"
               }`}
               value={bilangan}
@@ -98,14 +122,14 @@ const AkarBilanganCalculator = () => {
           </div>
         )}
 
-        {data.length > 0 && (
+        {data.length > 0 ? (
           <div className="mt-10 ">
             <div className=" ">
               <table
                 className="text-sm text-left text-gray-500 dark:text-gray-400 "
                 style={{ width: "100%" }}
               >
-                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <thead className="text-xs  uppercase bg-gray-50 dark:bg-blue-900 text-white">
                   <tr>
                     <th className="px-4 py-2 border">Bilangan</th>
                     <th className="px-4 py-2 border ">Hasil Akar</th>
@@ -131,6 +155,8 @@ const AkarBilanganCalculator = () => {
               </table>
             </div>
           </div>
+        ) : (
+          <h1 className="mt-10 flex justify-center">No data available</h1>
         )}
       </div>
     </div>
