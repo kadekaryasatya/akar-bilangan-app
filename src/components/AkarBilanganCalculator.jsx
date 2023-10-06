@@ -18,7 +18,7 @@ const AkarBilanganCalculator = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        "http://akar-bilangan-api.h4ck.me/api/get-all-data"
+        "https://akar-bilangan-api.h4ck.me/api/get-all-data"
       );
       setData(response.data);
     } catch (error) {
@@ -39,7 +39,7 @@ const AkarBilanganCalculator = () => {
 
     try {
       const response = await axios.post(
-        "http://akar-bilangan-api.h4ck.me/api/hitung-akar",
+        "https://akar-bilangan-api.h4ck.me/api/hitung-akar",
         {
           bilangan: bilangan,
         }
