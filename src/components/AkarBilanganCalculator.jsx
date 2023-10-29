@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSort } from "@fortawesome/free-solid-svg-icons";
 
 const AkarBilanganCalculator = () => {
   const [bilangan, setBilangan] = useState("");
@@ -16,6 +18,31 @@ const AkarBilanganCalculator = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(data.length / itemsPerPage);
+  const [sortDirection, setSortDirection] = useState("asc"); // Default: ascending
+
+  // Fungsi untuk mengganti arah pengurutan
+  const toggleSortDirection = () => {
+    setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+  };
+
+  // Fungsi untuk mengurutkan data berdasarkan waktu pemrosesan
+  const sortDataByProcessingTime = () => {
+    const sortedData = [...data];
+    sortedData.sort((a, b) => {
+      if (sortDirection === "asc") {
+        return a.waktu_pemrosesan - b.waktu_pemrosesan;
+      } else {
+        return b.waktu_pemrosesan - a.waktu_pemrosesan;
+      }
+    });
+    setData(sortedData);
+    toggleSortDirection(); // Mengganti arah pengurutan setelah pengurutan selesai
+  };
+
+  // Menjalankan fungsi pengurutan ketika tombol "Sort" ditekan
+  const handleSort = () => {
+    sortDataByProcessingTime();
+  };
 
   useEffect(() => {
     fetchData();
@@ -101,6 +128,7 @@ const AkarBilanganCalculator = () => {
             <img src="/refresh.png" alt="Refresh" className="w-[20px]" />
           </button>
         </div>
+
         <div className="">
           <div className="lg:flex gap-4 justify-between items-center">
             <input
@@ -140,6 +168,7 @@ const AkarBilanganCalculator = () => {
 
         {data.length > 0 ? (
           <div className="mt-10  ">
+            <div className="flex justify-end"></div>
             <div className=" ">
               <table
                 className="text-sm text-left text-gray-500 dark:text-gray-400 "
@@ -153,8 +182,16 @@ const AkarBilanganCalculator = () => {
                     <th className="lg:px-4 lg:py-2 px-1 py-1 border ">
                       Hasil Akar
                     </th>
-                    <th className="lg:px-4 lg:py-2 px-1 py-1border">
-                      Waktu Pemrosesan (detik)
+                    <th
+                      className="lg:px-4 lg:py-2 px-1 py-1 border cursor-pointer"
+                      onClick={handleSort}
+                    >
+                      Waktu Pemrosesan (detik){" "}
+                      <span>
+                        <button className=" ">
+                          <FontAwesomeIcon icon={faSort} />
+                        </button>
+                      </span>
                     </th>
                   </tr>
                 </thead>
