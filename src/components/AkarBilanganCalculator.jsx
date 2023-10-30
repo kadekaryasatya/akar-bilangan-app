@@ -4,6 +4,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSort } from "@fortawesome/free-solid-svg-icons";
+import { useLocation } from "react-router-dom";
+import HamburgerMenu from "./Hamburger";
 
 const AkarBilanganCalculator = () => {
   const [bilangan, setBilangan] = useState("");
@@ -19,6 +21,13 @@ const AkarBilanganCalculator = () => {
   const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(data.length / itemsPerPage);
   const [sortDirection, setSortDirection] = useState("asc"); // Default: ascending
+
+  const location = useLocation();
+  const { state } = location;
+
+  // Check if state exists and contains nim and token properties
+  const nim = state && state.nim;
+  const id = state && state.id;
 
   // Fungsi untuk mengganti arah pengurutan
   const toggleSortDirection = () => {
@@ -51,9 +60,13 @@ const AkarBilanganCalculator = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        "https://akar-kuadrat-bilangan.azurewebsites.net/api/get-all-data"
+        "http://127.0.0.1:8000/api/get-all-data"
       );
-      setData(response.data);
+      const sortedData = response.data.sort(
+        (a, b) => new Date(b.created_at) - new Date(a.created_at)
+      );
+
+      setData(sortedData);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -72,9 +85,10 @@ const AkarBilanganCalculator = () => {
 
     try {
       const response = await axios.post(
-        "https://akar-kuadrat-bilangan.azurewebsites.net/api/hitung-akar",
+        "http://127.0.0.1:8000/api/hitung-akar",
         {
           bilangan: bilangan,
+          user_id: id,
         }
       );
 
@@ -83,11 +97,11 @@ const AkarBilanganCalculator = () => {
       setBilanganInput(bilangan);
       setValidasiError(false);
       // Setelah berhasil menyimpan data ke database, tambahkan data baru ke state
-      setData([...data, response.data]);
-      toast.success("Successful input data", {
-        position: toast.POSITION.TOP_RIGHT,
-        autoClose: 5000,
-      });
+      setData([response.data, ...data]);
+      // toast.success("Successful input data", {
+      //   position: toast.POSITION.TOP_RIGHT,
+      //   autoClose: 5000,
+      // });
     } catch (error) {
       // Handle Axios errors
       if (error.response && error.response.data && error.response.data.error) {
@@ -116,7 +130,15 @@ const AkarBilanganCalculator = () => {
   return (
     <div className="lg:my-8 lg:mx-28  min-h-screen mx-5 my-5">
       <ToastContainer />
-      <div className="shadow-lg p-10 border  ">
+      <div className="flex justify-between mb-5 text-lg">
+        {nim && (
+          <p className=" font-semibold">
+            Halo <span className="text-blue-500">"{nim}"</span>
+          </p>
+        )}
+        <HamburgerMenu />
+      </div>
+      <div className="shadow-lg lg:p-10 p-5 border">
         <div className="flex justify-between items-center mb-10">
           <h1 className="lg:text-3xl text-xl font-semibold text-blue-900">
             Kalkulator Akar Bilangan
@@ -176,14 +198,14 @@ const AkarBilanganCalculator = () => {
               >
                 <thead className="text-xs  uppercase bg-gray-50 dark:bg-blue-900 text-white ">
                   <tr>
-                    <th className="lg:px-4 lg:py-2 px-1 py-1 border">
+                    <th className="lg:px-4 lg:py-2 px-2 py-1 border">
                       Bilangan
                     </th>
-                    <th className="lg:px-4 lg:py-2 px-1 py-1 border ">
+                    <th className="lg:px-4 lg:py-2 px-2 py-1 border ">
                       Hasil Akar
                     </th>
                     <th
-                      className="lg:px-4 lg:py-2 px-1 py-1 border cursor-pointer"
+                      className="lg:px-4 lg:py-2 px-2 py-1 border cursor-pointer"
                       onClick={handleSort}
                     >
                       Waktu Pemrosesan (detik){" "}
@@ -201,13 +223,13 @@ const AkarBilanganCalculator = () => {
                       key={item.id}
                       className=" border-b border-gray-800  text-gray-800 text-xs lg:text-sm"
                     >
-                      <td className="lg:px-4 lg:py-2 px-1 py-1 border">
+                      <td className="lg:px-4 lg:py-2 px-2 py-1 border">
                         {item.bilangan}
                       </td>
-                      <td className="lg:px-4 lg:py-2 px-1 py-1 border">
+                      <td className="lg:px-4 lg:py-2 px-2 py-1 border">
                         {item.akar}
                       </td>
-                      <td className="lg:px-4 lg:py-2 px-1 py-1 border">
+                      <td className="lg:px-4 lg:py-2 px-2 py-1 border">
                         {item.waktu_pemrosesan}
                       </td>
                     </tr>
