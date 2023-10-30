@@ -169,9 +169,9 @@ const AkarBilanganCalculator = () => {
         {data.length > 0 ? (
           <div className="mt-10  ">
             <div className="flex justify-end"></div>
-            <div className=" ">
+            <div className=" overflow-x-auto">
               <table
-                className="text-sm text-left text-gray-500 dark:text-gray-400 "
+                className="text-sm text-left text-gray-500 dark:text-gray-400"
                 style={{ width: "100%", overflowX: "auto" }}
               >
                 <thead className="text-xs  uppercase bg-gray-50 dark:bg-blue-900 text-white ">
