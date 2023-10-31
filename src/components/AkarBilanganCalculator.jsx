@@ -63,7 +63,7 @@ const AkarBilanganCalculator = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        "http://akar-kuadrat-bilangan.azurewebsites.net/api/get-all-data"
+        "https://akar-kuadrat-bilangan.azurewebsites.net/api/get-all-data"
       );
       const sortedData = response.data.sort(
         (a, b) => new Date(b.created_at) - new Date(a.created_at)
@@ -88,7 +88,7 @@ const AkarBilanganCalculator = () => {
 
     try {
       const response = await axios.post(
-        "http://akar-kuadrat-bilangan.azurewebsites.net/api/hitung-akar",
+        "https://akar-kuadrat-bilangan.azurewebsites.net/api/hitung-akar",
         {
           bilangan: bilangan,
           user_id: id,

@@ -12,7 +12,7 @@ function DataUser() {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        "http://akar-kuadrat-bilangan.azurewebsites.net/api/user-data"
+        "https://akar-kuadrat-bilangan.azurewebsites.net/api/user-data"
       );
       setData(response.data);
     } catch (error) {
