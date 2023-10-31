@@ -11,7 +11,7 @@ function Ranking() {
     // Fetch data for fastest processing time
     axios
       .get(
-        "http://akar-kuadrat-bilangan.azurewebsites.net/api/get-lowest-processing-time"
+        "https://akar-kuadrat-bilangan.azurewebsites.net/api/get-lowest-processing-time"
       )
       .then((response) => {
         setWaktuTercepat(response.data.waktu_pemrosesan);
@@ -20,7 +20,7 @@ function Ranking() {
     // Fetch data for slowest processing time
     axios
       .get(
-        "http://akar-kuadrat-bilangan.azurewebsites.net/api/get-highest-processing-time"
+        "https://akar-kuadrat-bilangan.azurewebsites.net/api/get-highest-processing-time"
       )
       .then((response) => {
         setWaktuTerlambat(response.data.waktu_pemrosesan);
@@ -29,7 +29,7 @@ function Ranking() {
     // Fetch data for average processing time
     axios
       .get(
-        "http://akar-kuadrat-bilangan.azurewebsites.net/api/average-processing-time"
+        "https://akar-kuadrat-bilangan.azurewebsites.net/api/average-processing-time"
       )
       .then((response) => {
         setRataRata(response.data.rata_rata_waktu_pemrosesan);

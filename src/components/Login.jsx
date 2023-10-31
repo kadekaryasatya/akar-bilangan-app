@@ -18,7 +18,7 @@ const Login = () => {
       }
 
       const response = await axios.post(
-        "http://akar-kuadrat-bilangan.azurewebsites.net/api/login",
+        "https://akar-kuadrat-bilangan.azurewebsites.net/api/login",
         {
           nim,
           password,
