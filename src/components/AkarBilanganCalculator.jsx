@@ -22,12 +22,15 @@ const AkarBilanganCalculator = () => {
   const totalPages = Math.ceil(data.length / itemsPerPage);
   const [sortDirection, setSortDirection] = useState("asc"); // Default: ascending
 
-  const location = useLocation();
-  const { state } = location;
+  // const location = useLocation();
+  // const { state } = location;
 
   // Check if state exists and contains nim and token properties
-  const nim = state && state.nim;
-  const id = state && state.id;
+  const nim = localStorage.getItem("userNim");
+  const id = localStorage.getItem("id");
+
+  console.log("id :>> ", id);
+  console.log("nim :>> ", nim);
 
   // Fungsi untuk mengganti arah pengurutan
   const toggleSortDirection = () => {

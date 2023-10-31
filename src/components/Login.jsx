@@ -26,6 +26,9 @@ const Login = () => {
       );
 
       const { nim: userNim, token, id } = response.data.data; // Use a different variable name
+      localStorage.setItem("userNim", userNim);
+      localStorage.setItem("token", token);
+      localStorage.setItem("id", id);
 
       navigate("/hitung", { state: { nim: userNim, token, id } });
       console.log("response :>> ", response.data);
