@@ -17,10 +17,13 @@ const Login = () => {
         return;
       }
 
-      const response = await axios.post("http://127.0.0.1:8000/api/login", {
-        nim,
-        password,
-      });
+      const response = await axios.post(
+        "http://akar-kuadrat-bilangan.azurewebsites.net/api/login",
+        {
+          nim,
+          password,
+        }
+      );
 
       const { nim: userNim, token, id } = response.data.data; // Use a different variable name
 

@@ -60,7 +60,7 @@ const AkarBilanganCalculator = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        "http://127.0.0.1:8000/api/get-all-data"
+        "http://akar-kuadrat-bilangan.azurewebsites.net/api/get-all-data"
       );
       const sortedData = response.data.sort(
         (a, b) => new Date(b.created_at) - new Date(a.created_at)
@@ -85,7 +85,7 @@ const AkarBilanganCalculator = () => {
 
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/hitung-akar",
+        "http://akar-kuadrat-bilangan.azurewebsites.net/api/hitung-akar",
         {
           bilangan: bilangan,
           user_id: id,
@@ -131,10 +131,12 @@ const AkarBilanganCalculator = () => {
     <div className="lg:my-8 lg:mx-28  min-h-screen mx-5 my-5">
       <ToastContainer />
       <div className="flex justify-between mb-5 text-lg">
-        {nim && (
+        {nim ? (
           <p className=" font-semibold">
             Halo <span className="text-blue-500">"{nim}"</span>
           </p>
+        ) : (
+          <>Halo</>
         )}
         <HamburgerMenu />
       </div>

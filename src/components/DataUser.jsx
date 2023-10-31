@@ -11,7 +11,9 @@ function DataUser() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:8000/api/user-data");
+      const response = await axios.get(
+        "http://akar-kuadrat-bilangan.azurewebsites.net/api/user-data"
+      );
       setData(response.data);
     } catch (error) {
       console.error("Error:", error);
@@ -35,7 +37,11 @@ function DataUser() {
           className="px-4 py-2 bg-blue-100 text-white rounded hover:bg-blue-200 mb-5 "
           onClick={handleRefresh} // Tambahkan handler yang sesuai
         >
-          <img src="/refresh.png" alt="Refresh" className="w-[20px]" />
+          <img
+            src="/refresh.png"
+            alt="Refresh"
+            className="lg:w-[20px] w-[15px]"
+          />
         </button>
         <div className="overflow-x-auto">
           <table

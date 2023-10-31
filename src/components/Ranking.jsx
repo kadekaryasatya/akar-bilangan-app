@@ -10,21 +10,27 @@ function Ranking() {
   useEffect(() => {
     // Fetch data for fastest processing time
     axios
-      .get("http://127.0.0.1:8000/api/get-lowest-processing-time")
+      .get(
+        "http://akar-kuadrat-bilangan.azurewebsites.net/api/get-lowest-processing-time"
+      )
       .then((response) => {
         setWaktuTercepat(response.data.waktu_pemrosesan);
       });
 
     // Fetch data for slowest processing time
     axios
-      .get("http://127.0.0.1:8000/api/get-highest-processing-time")
+      .get(
+        "http://akar-kuadrat-bilangan.azurewebsites.net/api/get-highest-processing-time"
+      )
       .then((response) => {
         setWaktuTerlambat(response.data.waktu_pemrosesan);
       });
 
     // Fetch data for average processing time
     axios
-      .get("http://127.0.0.1:8000/api/average-processing-time")
+      .get(
+        "http://akar-kuadrat-bilangan.azurewebsites.net/api/average-processing-time"
+      )
       .then((response) => {
         setRataRata(response.data.rata_rata_waktu_pemrosesan);
       });
@@ -47,7 +53,11 @@ function Ranking() {
           className="px-4 py-2 bg-blue-100 text-white rounded hover:bg-blue-200 mb-5 "
           onClick={handleRefresh} // Tambahkan handler yang sesuai
         >
-          <img src="/refresh.png" alt="Refresh" className="w-[20px]" />
+          <img
+            src="/refresh.png"
+            alt="Refresh"
+            className="lg:w-[20px] w-[15px]"
+          />
         </button>
         <table
           className="text-lg  text-gray-500 dark:text-gray-400  text-center"
